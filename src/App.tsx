@@ -128,7 +128,7 @@ function App() {
       <h1>{TITLE}</h1>
       <p className="lede">{TAG}</p>
 
-      <div className="card">
+      <div className="card form-card">
         {Q.map(q => (
           <div key={q.id} style={{ marginBottom: 16 }}>
             <label>{q.label}</label>
@@ -148,6 +148,23 @@ function App() {
 
       {show && ready && (
         <div ref={ref}>
+          <div className="pdf-date">
+            Generated {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          </div>
+
+          <div className="card">
+            <h2>Your inputs</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, fontSize: 14, lineHeight: 1.6 }}>
+              {Q.map(q => (
+                a[q.id] ? (
+                  <div key={q.id}>
+                    <strong>{q.label}:</strong> {a[q.id]}
+                  </div>
+                ) : null
+              ))}
+            </div>
+          </div>
+
           <div className="card">
             <div className="score-block">
               <div className="score-ring" style={{ "--score": p, "--ring-color": b.color }}>
@@ -201,9 +218,14 @@ function App() {
             </div>
           </div>
 
-          <div className="card">
+          <div className="card actions-card">
             <button className="btn" onClick={onCopy}>Copy this brief</button>
+            <button className="btn secondary" style={{ marginLeft: 10 }} onClick={() => window.print()}>Download PDF</button>
             <button className="btn secondary" style={{ marginLeft: 10 }} onClick={reset}>Run again</button>
+          </div>
+
+          <div className="pdf-footer">
+            An independent tool by Ryan Lacerda. Not affiliated with {BRAND.company}. Visit {BRAND.company.toLowerCase()} at {BRAND.homepage}.
           </div>
         </div>
       )}
