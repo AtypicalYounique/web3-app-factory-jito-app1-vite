@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef } from "react";
 import "./styles.css";
+import { BRAND } from "./brand";
 
 const TITLE = "JitoSOL & Solana Liquid Staking Risk Readiness Calculator";
 const TAG = "A directional readiness check for institutions, funds, treasuries, dApps, and curious delegators thinking about JitoSOL exposure on Solana — drawn from publicly described mechanics of Jito (the Block Engine, JitoSOL stake pool with 160+ validators, StakeNet, Jito Restaking, and TipRouter).";
@@ -112,6 +113,17 @@ function App() {
 
   return (
     <div className="wrap">
+      <header className="brand-bar">
+        <a
+          href={BRAND.homepage}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="brand-logo"
+          aria-label={BRAND.company}
+          dangerouslySetInnerHTML={{ __html: BRAND.logoSvg }}
+        />
+        <span className="brand-chip">Independent tool</span>
+      </header>
       <div className="eyebrow">For institutions, treasuries, integrators, delegators · Pattern-based</div>
       <h1>{TITLE}</h1>
       <p className="lede">{TAG}</p>
@@ -201,6 +213,7 @@ function App() {
       </div>
 
       <div className={"toast " + (toast ? "show" : "")}>Brief copied to clipboard</div>
+    <footer className="attribution">{BRAND.attribution}</footer>
     </div>
   );
 }
