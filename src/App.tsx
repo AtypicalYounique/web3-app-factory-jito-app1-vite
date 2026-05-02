@@ -3,7 +3,7 @@ import "./styles.css";
 import { BRAND } from "./brand";
 
 const TITLE = "JitoSOL & Solana Liquid Staking Risk Readiness Calculator";
-const TAG = "A directional readiness check for institutions, funds, treasuries, dApps, and curious delegators thinking about JitoSOL exposure on Solana — drawn from publicly described mechanics of Jito (the Block Engine, JitoSOL stake pool with 160+ validators, StakeNet, Jito Restaking, and TipRouter).";
+const TAG = "A directional readiness check for institutions, funds, treasuries, dApps, and curious delegators thinking about JitoSOL exposure on Solana, drawn from publicly described mechanics of Jito (the Block Engine, JitoSOL stake pool with 160+ validators, StakeNet, Jito Restaking, and TipRouter).";
 
 const Q = [
   { id:"holderType", label:"Who's evaluating?", options:["Retail / individual","DAO treasury","Crypto fund / market maker","Institution (RIA, family office, fintech)","Integrating dApp / wallet"] },
@@ -12,7 +12,7 @@ const Q = [
   { id:"liquidityNeed", label:"Liquidity need", options:["May need to exit any day","May need to exit within a week","Comfortable with stake-pool unbond timelines","Comfortable with epoch-bound exits"] },
   { id:"yieldExpect", label:"What do you expect from JitoSOL yield?", options:["Pure base SOL staking yield","Base + small MEV uplift","Material MEV uplift over native staking","I'd need help thinking about this"] },
   { id:"riskAware", label:"Which risks have you actively thought about?", options:["None yet","LST depeg / secondary-market risk","Validator concentration & operator risk","Smart contract / stake-pool risk","Multiple of the above"] },
-  { id:"restakingExp", label:"Are you also considering Jito Restaking layered on top?", options:["No, JitoSOL only","Maybe — exploring NCNs and TipRouter","Yes — actively want restaking exposure","Don't know what restaking means yet"] },
+  { id:"restakingExp", label:"Are you also considering Jito Restaking layered on top?", options:["No, JitoSOL only","Maybe, exploring NCNs and TipRouter","Yes, actively want restaking exposure","Don't know what restaking means yet"] },
   { id:"reporting", label:"Reporting / compliance need", options:["None","Internal-only","Light external (LP letters, dashboards)","Strict (audited statements, custody requirements)"] },
 ];
 
@@ -23,7 +23,7 @@ const RISK = {
   liquidityNeed: { "May need to exit any day": 3, "May need to exit within a week": 2, "Comfortable with stake-pool unbond timelines": 0.6, "Comfortable with epoch-bound exits": 0.4 },
   yieldExpect: { "Pure base SOL staking yield": 0.4, "Base + small MEV uplift": 0.7, "Material MEV uplift over native staking": 1.6, "I'd need help thinking about this": 2 },
   riskAware: { "None yet": 3, "LST depeg / secondary-market risk": 1, "Validator concentration & operator risk": 1, "Smart contract / stake-pool risk": 1, "Multiple of the above": 0.4 },
-  restakingExp: { "No, JitoSOL only": 0.5, "Maybe — exploring NCNs and TipRouter": 1.6, "Yes — actively want restaking exposure": 2.4, "Don't know what restaking means yet": 2.6 },
+  restakingExp: { "No, JitoSOL only": 0.5, "Maybe, exploring NCNs and TipRouter": 1.6, "Yes, actively want restaking exposure": 2.4, "Don't know what restaking means yet": 2.6 },
   reporting: { "None": 0.4, "Internal-only": 0.7, "Light external (LP letters, dashboards)": 1.2, "Strict (audited statements, custody requirements)": 2.2 },
 };
 const MAX = 19;
@@ -37,7 +37,7 @@ function band(p) {
   if (p < 25) return { label: "Looks well-prepared for JitoSOL exposure", color: "var(--good)", tone: "good" };
   if (p < 50) return { label: "Workable, with a few gaps to close", color: "var(--accent-2)", tone: "good" };
   if (p < 70) return { label: "Real readiness gaps", color: "var(--warn)", tone: "warn" };
-  return { label: "High readiness gaps — plan before sizing up", color: "var(--bad)", tone: "bad" };
+  return { label: "High readiness gaps, plan before sizing up", color: "var(--bad)", tone: "bad" };
 }
 
 function recos(a) {
@@ -57,7 +57,7 @@ function recos(a) {
   if (a.yieldExpect === "I'd need help thinking about this") {
     r.push("A clean way to model JitoSOL yield is: SOL base staking yield + share of MEV tips routed through the Block Engine, minus stake-pool fee. Then sanity-check against a few epochs of public data.");
   }
-  if (a.restakingExp === "Maybe — exploring NCNs and TipRouter" || a.restakingExp === "Yes — actively want restaking exposure" || a.restakingExp === "Don't know what restaking means yet") {
+  if (a.restakingExp === "Maybe, exploring NCNs and TipRouter" || a.restakingExp === "Yes, actively want restaking exposure" || a.restakingExp === "Don't know what restaking means yet") {
     r.push("Jito Restaking adds a separate risk surface: vault smart-contract risk, NCN (Node Consensus Network) operator risk, and slashing-equivalent conditions per NCN. TipRouter, for example, has a documented fee structure (3% on tips with portions to vault operators). Restaking yield should be evaluated against the marginal risk it adds, not against base staking.");
   }
   if (a.holderType === "Institution (RIA, family office, fintech)" || a.reporting === "Strict (audited statements, custody requirements)") {
@@ -67,7 +67,7 @@ function recos(a) {
     r.push("At your size, validator-set concentration matters: how is stake distributed across the JitoSOL validator set, and how concentrated is the top decile? StakeNet performance scoring is a useful public lens here.");
   }
   if (a.horizon === "< 30 days") {
-    r.push("Sub-30-day horizons rarely justify LST exposure on yield alone — the carry is small over the period and exit slippage can dominate. Worth being honest about whether the trade is yield, expression, or strategic.");
+    r.push("Sub-30-day horizons rarely justify LST exposure on yield alone. The carry is small over the period and exit slippage can dominate. Worth being honest about whether the trade is yield, expression, or strategic.");
   }
   if (a.holderType === "Integrating dApp / wallet") {
     r.push("If you're integrating JitoSOL into a wallet/dApp UX, the conversation also includes user-facing depeg communication, mint/redeem UX, and how you display 'JitoSOL ↔ SOL' to users. The technical risk story isn't enough on its own.");
@@ -78,7 +78,7 @@ function recos(a) {
 function brief(a, p, b, recosList) {
   const lines = [];
   lines.push(TITLE);
-  lines.push(`Readiness gap score: ${p} / 100 — ${b.label}`);
+  lines.push(`Readiness gap score: ${p} / 100 · ${b.label}`);
   lines.push("");
   lines.push("Profile:");
   for (const q of Q) if (a[q.id]) lines.push(`  • ${q.label}: ${a[q.id]}`);
